@@ -1,0 +1,31 @@
+﻿DROP PROCEDURE IF EXISTS master.dbo.Script1;
+
+CREATE PROCEDURE master.dbo.Script1()
+AS
+BEGIN
+    REFERENCE ASSEMBLY  master.Load_FactsInvoiceTimelinessAccuracyAssembly;
+    //USING InvoiceTimelinessAccuracyClass = InvoiceTimelinessAccuracy.InvoiceTimelinessAccuracy;
+
+
+    DECLARE @DataFilePathAccuracy string = "/RawPoC/InvoiceTimelinessAndAccuracy/2017/2017-01-InvoiceAccuracy-Global.csv";    
+    DECLARE @DataFilePathTimeliness string = "/RawPoC/InvoiceTimelinessAndAccuracy/2017/2017-01-InvoiceTimeliness-Global.csv";
+    DECLARE @DataGeoFilePath string = "/Trusted/DimGeo.csv";
+    DECLARE @DataGeoCsoFilePath string = "/Trusted/DimGeo_CSOAlias.csv";
+    DECLARE @DataDateFilePath string = "/Trusted/DimDate.csv";
+    DECLARE @OutputFilePathTimeliness string = "/Trusted/17WK01-InvoiceTimeliness-Out.csv";
+    DECLARE @OutputFilePathAccuracy string = "/Trusted/17WK01-InvoiceAccuracy-Out.csv";
+    DECLARE @OutputErr string = "/Trusted/InvoiceTimelinessErr.csv";
+
+    // begin Master Data
+    DECLARE @DataFilePathClient string = "/RawPoC/InvoiceTimelinessAndAccuracy/2017/2017-InvoicingMasterData-ClientPeriodicBilling.csv";    
+    DECLARE @DataFilePathMaterialCSOClient string = "/RawPoC/InvoiceTimelinessAndAccuracy/2017/2017-InvoicingMasterData-MaterialCSOClientExceptions.csv";
+    DECLARE @DataFilePathMaterialCSOExceptions string = "/RawPoC/InvoiceTimelinessAndAccuracy/2017/2017-InvoicingMasterData-MaterialCSOExceptions.csv";
+    DECLARE @DataFilePathMaterialExceptions string = "/RawPoC/InvoiceTimelinessAndAccuracy/2017/2017-InvoicingMasterData-MaterialExceptions.csv";
+    DECLARE @DataFilePathJRDBillingData string = "/RawPoC/InvoiceTimelinessAndAccuracy/2017/JRDBillingDataLookupTimelinessHelpfile.csv";
+
+   
+
+    OUTPUT @finalAccuracy TO @OutputFilePathAccuracy USING Outputters.Csv(outputHeader : true);
+    OUTPUT @finalTimeliness TO @OutputFilePathTimeliness USING Outputters.Csv(outputHeader : true);
+
+END;
